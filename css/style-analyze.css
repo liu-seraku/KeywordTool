@@ -1,0 +1,376 @@
+@charset "utf-8";
+
+html {
+    scroll-behavior: smooth;
+}
+
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: blue;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 16px;
+}
+
+.app-name {
+    margin-top: 10px;
+    color: white;
+    font-size: 18px;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.links {
+    margin-top: 40px;
+}
+
+.logo img {
+    max-width: 90%;
+    display: block;
+    margin: auto;
+}
+
+.sidebar span {
+    padding: 8px 0px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #818181;
+    display: block;
+    text-align: center;
+}
+
+.sidebar span:hover {
+    cursor: pointer;
+    color: #f1f1f1;
+    background-color: #818181;
+}
+
+.sidebar span.active {
+    color: black;
+    background-color: white;
+}
+
+#main {
+    transition: margin-left .5s;
+}
+
+.sidebar-btns {
+    position: absolute;
+}
+
+.sidebar-btns:hover {
+    background-color: gray;
+}
+
+.sidebar-btns img {
+    width: 24px;
+}
+
+.left {
+    display: none;
+}
+
+#main h1 {
+    margin-top: 12px;
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: bolder;
+}
+
+#main h2 {
+    border-bottom: solid 2px #007bff;
+    border-left: solid 8px #007bff;
+    font-size: 20px;
+    font-weight: bolder;
+    padding: 4px 12px;
+}
+
+.contents {
+    margin-left: 32px;
+}
+
+.keyword-area,
+.link-area {
+    margin-top: 30px;
+    float: left;
+}
+
+.keyword-area {
+    margin-right: 30px;
+}
+
+.link-area {
+    width: 800px;
+}
+
+.topic-label {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.topics {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.tpcs {
+    display: flex;
+    justify-content: left;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+span.tpc {
+    border: solid 1px #007bff;
+    color: #007bff;
+    font-size: 16px;
+    padding: 4px 8px;
+    margin-bottom: 4px;
+    margin-right: 4px;
+}
+
+span.hit {
+    border: solid 1px pink;
+    background-color: pink;
+    color: red;
+    font-size: 16px;
+    padding: 4px 8px;
+    margin-bottom: 4px;
+    margin-right: 4px;
+}
+
+span.tpc:hover {
+    cursor: pointer;
+    background-color: #7bbbff;
+    border-color: #7bbbff;
+    color: white;
+}
+
+span.tpc.active {
+    background-color: #7bbbff;
+    border-color: #7bbbff;
+    color: white;
+}
+
+span.selected {
+    border: solid 1px #007bff;
+    font-size: 16px;
+    padding: 4px 8px;
+    background-color: white;
+    color: #007bff;
+}
+
+.start-analyze {
+    display: block;
+    width: 100%;
+    margin-top: 24px;
+}
+
+.NHK-shows {
+    max-height: 300px;
+    overflow: auto;
+}
+
+.NHK-area {
+    clear: both;
+}
+
+.NHK-service {
+    padding: 6px 12px;
+    border: solid 1px #007bff;
+    color: #007bff;
+}
+
+.NHK-btn {
+    margin-left: 48px;
+    vertical-align: bottom;
+}
+
+.show-detail {
+    text-align: start;
+    display: none;
+}
+
+.icon-img {
+    width: 1rem;
+    vertical-align: baseline;
+}
+
+table {
+    width: 95%;
+    margin-left: 1rem;
+    text-align: center;
+    border: solid 1px #007bff;
+    color: #007bff;
+}
+
+th {
+    font-weight: bold;
+    background-color: #007bff;
+    color: white;
+}
+
+th,
+td {
+    border: solid 1px #007bff;
+}
+
+.NHK-result:hover {
+    background-color: #7bbbff;
+    color: white;
+    cursor: pointer;
+}
+
+.result-area {
+    padding-top: 30px;
+}
+
+.analyze-area {
+    margin-top: 48px;
+}
+
+.analyze-area label {
+    display: block;
+    margin-top: 15px;
+}
+
+.form-control {
+    display: inline;
+    width: 200px;
+}
+
+.keywords {
+    display: inline-block;
+}
+
+.keyword-panel input,
+.keyword-panel button,
+.keyword-panel span {
+    float: left;
+}
+
+.keyword-panel {
+    margin-bottom: 4px;
+}
+
+.keyword-panel.option {
+    display: none;
+}
+
+span.label {
+    padding: 6px 0px;
+}
+
+.delete-btn {
+    border: solid 1px lightgray;
+    padding: 6px 8px;
+    vertical-align: middle;
+    border-radius: 4px;
+}
+
+.delete-btn:hover {
+    cursor: pointer;
+    background-color: darkgray;
+    color: white;
+}
+
+.add-key-btn {
+    width: 100%;
+}
+
+.hit-tpcs {
+    height: 150px;
+    overflow-y: auto;
+}
+
+.hit-tpcs li {
+    margin-top: 12px;
+}
+
+
+
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidebar {
+        padding-top: 15px;
+    }
+
+    .sidebar a {
+        font-size: 18px;
+    }
+}
+
+canvas {
+    margin-top: 60px;
+    width: 95%;
+    height: 500px;
+}
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: white;
+    color: #007bff;
+    padding: 6px 12px;
+    margin-right: 16px;
+    font-size: 1rem;
+    border: solid 1px #007bff;
+    border-radius: .25rem;
+    cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover,
+.dropbtn:focus {
+    background-color: #007bff;
+    color: white;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content div {
+    color: #007bff;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content div:hover {
+    background-color: #007bff98;
+    color: white;
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {
+    display: block;
+}
+
+.hidden-option {
+    display: none;
+}
+
+.searching-btn {
+    vertical-align: baseline;
+    margin-left: 16px;
+}
+
