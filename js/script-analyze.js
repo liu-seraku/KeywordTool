@@ -8,6 +8,8 @@ $(function () {
     //if first word is #, need to be deleted  
     $(".selected").text(keywordVal);
     $(".NHK-keyword").val(keywordVal);
+    var searchUrl = $(".searching-btn").attr("href");
+    $(".searching-btn").attr("href", searchUrl + keywordVal);
     keyword.push(keywordVal);
     var endDate = new Date();
     var endDateISO = endDate.toISOString();
@@ -236,7 +238,7 @@ $(function () {
                             showDetail.append(detailTd);
                             $(".NHK-tbody").append(showDetail);
 
-                            showTr.click(function(){
+                            showTr.click(function () {
                                 $(this).next().toggle();
                             });
 
