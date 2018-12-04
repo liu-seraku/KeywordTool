@@ -35,7 +35,7 @@ html {
     margin: auto;
 }
 
-.sidebar span {
+.sidebar a {
     padding: 8px 0px;
     text-decoration: none;
     font-size: 20px;
@@ -44,15 +44,9 @@ html {
     text-align: center;
 }
 
-.sidebar span:hover {
-    cursor: pointer;
+.sidebar a:hover {
     color: #f1f1f1;
     background-color: #818181;
-}
-
-.sidebar span.active {
-    color: black;
-    background-color: white;
 }
 
 #main {
@@ -60,11 +54,14 @@ html {
 }
 
 .sidebar-btns {
-    position: absolute;
+    position: fixed;
+    top: 0px;
+    width: 24px;
+    height: 100%;
 }
 
 .sidebar-btns:hover {
-    background-color: gray;
+    background-color: #007bff;
 }
 
 .sidebar-btns img {
@@ -73,6 +70,19 @@ html {
 
 .left {
     display: none;
+}
+
+.left,
+.right {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.left:hover,
+.right:hover {
+    cursor: pointer;
+    background-color: white;
 }
 
 #main h1 {
@@ -180,15 +190,18 @@ span.selected {
     clear: both;
 }
 
+.web-sites,
 .NHK-service {
     padding: 6px 12px;
     border: solid 1px #007bff;
     color: #007bff;
+    margin-right: 16px;
+    border-radius: .25rem;
 }
 
 .NHK-btn {
     margin-left: 48px;
-    vertical-align: bottom;
+    vertical-align: baseline;
 }
 
 .show-detail {

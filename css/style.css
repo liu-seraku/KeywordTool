@@ -74,16 +74,13 @@ h1 {
   font-weight: bolder;
 }
 
-.keyword-search h2 {
+.content h2,
+.setting-area h2 {
   border-bottom: solid 2px #007bff;
   border-left: solid 8px #007bff;
   font-size: 20px;
   font-weight: bolder;
   padding: 4px 12px;
-}
-
-.keyword-search label{
-  font-weight: bold;
 }
 
 .keyword-search,
@@ -91,40 +88,36 @@ h1 {
   margin-bottom: 72px;
 }
 
-.keywords-div h2 {
-  border-bottom: solid 2px #007bff;
-  border-left: solid 8px #007bff;
-  font-size: 20px;
-  font-weight: bolder;
-  padding: 4px 12px;
+.portal-keyword {
+  margin: 1rem;
 }
 
-.keywords {
-  margin-top: 12px;
-  margin-left: 8px;
-  border: solid 1px #818181;
-  min-height: 34px;
-  max-height: 94px;
-  overflow-y: auto;
+.portal-selected {
+  display: inline;
+  width: auto;
 }
 
-.keywords span,
-.selected-k span {
-  float: left;
-  margin-top: 4px;
-  margin-left: 4px;
-  border: solid 1px #818181;
-  padding: 4px;
+.portal-sites-btn {
+  vertical-align: baseline;
+  margin-left: 20px;
 }
 
-.keywords span:hover {
+.icon-img {
+  width: 1rem;
+  vertical-align: baseline;
+}
+
+.portal-web-sites {
+  padding: 6px 12px;
+  border: solid 1px #007bff;
+  border-radius: .25rem;
+  color: #007bff;
+  margin-left: 80px;
+  margin-right: 20px;
+}
+
+.portal-web-sites:hover {
   cursor: pointer;
-  background-color: #818181;
-}
-
-.keywords span.active {
-  color: white;
-  background-color: #818181;
 }
 
 .third-div {
@@ -158,6 +151,14 @@ h1 {
   margin-top: 48px;
 }
 
+.keywords {
+  margin: 1rem;
+  display: flex;
+  justify-content: start;
+  flex-wrap: wrap;
+  overflow-y: auto;
+}
+
 .topics {
   margin-top: 16px;
   display: flex;
@@ -167,6 +168,7 @@ h1 {
   overflow-y: auto;
 }
 
+.keywords span,
 .topics span {
   border: solid 1px #007bff;
   color: #007bff;
@@ -176,24 +178,17 @@ h1 {
   margin-right: 4px;
 }
 
+.keywords span:hover,
 .topics span:hover {
   cursor: pointer;
-  background-color: #007bff;
+  background-color: #7bbbff;
+  border-color: #7bbbff;
   color: white;
 }
 
+.keywords span.active,
 .topics span.active {
-  background-color: #007bff;
+  background-color: #7bbbff;
+  border-color: #7bbbff;
   color: white;
-}
-
-/* Add media queries for small screens (when the height of the screen is less than 450px, add a smaller padding and font-size) */
-@media screen and (max-height: 450px) {
-  .sidebar {
-    padding-top: 15px;
-  }
-
-  .sidebar a {
-    font-size: 18px;
-  }
 }

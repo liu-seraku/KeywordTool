@@ -24,55 +24,45 @@
     <main>
         <div class="sidebar">
             <div class="logo"><img src="/img/logo.PNG" alt="logo"></div>
-            <div class="app-name">キーワード分析</div>
+            <div class="app-name">キーワード</div>
             <div class="links">
-                <span class="portal-button" id="first-div">ポータル</span>
-                <span class="second-button" id="second-div">キーワード検索</span>
-                <span class="third-button active" id="third-div">キーワード分析</span>
-                <span class="forth-button" id="forth-div">Contact</span>
+                <span class="portal-button active" id="first-div">ポータル</span>
+                <span class="second-button" id="second-div">キーワード分析</span>
+                <span class="third-button" id="third-div">キーワード予測</span>
+                <span class="forth-button" id="forth-div">設定</span>
             </div>
         </div>
         <div class="main">
             <div class="first-div">
-                <h1>キーワード状況一覧</h1>
+                <h1>キーワード一覧</h1>
 
                 <div class="content">
                     <div class="keyword-search">
                         <h2>キーワード検索</h2>
-                        <label>キーワード</label><button>Here should be a dropdown battun to do the different searching</button>
-                        <div class="selected-k"></div>
-                    </div>
-                    <div class="keywords-div">
-                        <h2>
-                            24時間以内の話題キーワード
-                        </h2>
-                        <div class="keywords">
-                            <span>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
+                        <div class="portal-keyword">
+                            <label>キーワード：</label>　
+                            <input class="portal-selected form-control" aria-describedby="button-addon2" type="text"
+                                placeholder="キーワード入力">
+                            <select class="portal-web-sites">
+                                <option value="https://twitter.com/search?q=">Twitter</option>
+                                <option value="https://www.google.co.jp/search?q=">Google</option>
+                                <option value="https://www.facebook.com/search/top/?q=">Facebook</option>
+                                <option value="https://tv.yahoo.co.jp/search/?q=">YAHOO!テレビ</option>
+                            </select>
+                            <label>にて</label>
+                            <a href="https://twitter.com/search?q=" target="_blank" class="portal-sites-btn btn btn-primary">キーワードを検索</a>
                         </div>
                     </div>
                     <div class="keywords-div">
                         <h2>
-                            1週間以内の話題キーワード
+                            本日のTwitterトレンド
                         </h2>
                         <div class="keywords">
-                            <span>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
-                            <span>bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</span>
-                            <span>cccccccccccccccccccccccccccccccccccccccccc</span>
-                            <span>ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span>eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</span>
                         </div>
-                    </div>
-                    <div class="keywords-div">
-                        <h2>
-                            話題キーワード検索
-                        </h2>
                     </div>
                 </div>
             </div>
             <div class="second-div">
-                <h1>キーワード検索</h1>
-            </div>
-            <div class="third-div">
                 <h1>キーワード分析</h1>
                 <div class="input-panel">
                     <form action="/keyword-analyze.html">
@@ -85,8 +75,16 @@
                     </div>
                 </div>
             </div>
+            <div class="third-div">
+                <h1>キーワード予測</h1>
+            </div>
             <div class="forth-div">
-                <h1>Forth Div</h1>
+                <h1>設定</h1>
+                <div class="setting-area">
+                    <div class="NHK-setting">
+                        <h2>NHK番組表API</h2>
+                    </div>
+                </div>
             </div>
         </div>
     </main>

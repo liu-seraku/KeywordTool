@@ -5,7 +5,6 @@ $(function () {
     var urlParams = new URLSearchParams(location.search);
     var keywordVal = urlParams.get('keyword');
     var keyword = new Array();
-    //if first word is #, need to be deleted  
     $(".selected").text(keywordVal);
     $(".NHK-keyword").val(keywordVal);
     var searchUrl = $(".searching-btn").attr("href");
@@ -47,18 +46,9 @@ $(function () {
         var textVal = $(dom).text();
         $(".selected").text(textVal);
         $(".NHK-keyword").val(textVal);
-
         var keyword = $(".topic-label").text();
-        var btnText = $(".dropbtn").text();
-        if (btnText == " Google") {
-            $(".searching-btn").attr("href", "https://www.google.co.jp/search?q=" + keyword + " " + textVal);
-        } else if (btnText == " Twitter") {
-            $(".searching-btn").attr("href", "https://twitter.com/search?q=" + keyword + " " + textVal);
-        } else if (btnText == " Facebook") {
-            $(".searching-btn").attr("href", "https://www.facebook.com/search/top/?q=" + keyword + " " + textVal);
-        } else if (btnText == " YAHOO!テレビ") {
-            $(".searching-btn").attr("href", "https://tv.yahoo.co.jp/search/?q=" + keyword + " " + textVal);
-        }
+        var url = $(".web-sites").val();
+        $(".searching-btn").attr("href", url + keyword + " " +textVal);
     }
 
     function drawGraph(keyword, jsonObj) {
@@ -130,6 +120,7 @@ $(function () {
         xhr.responseType = 'json';
         xhr.onreadystatechange = () => {
             if (xhr.readyState === XMLHttpRequest.DONE) {
+                console.log(xhr.response);
                 drawGraph(keyword, xhr.response);
             }
         };
@@ -291,49 +282,11 @@ $(function () {
         interestOverTime(keywords);
     });
 
-    /* When the user clicks on the button, 
-toggle between hiding and showing the dropdown content */
-    function myFunction() {
-        document.getElementById("myDropdown").classList.toggle("show");
-    }
-
-    // Close the dropdown menu if the user clicks outside of it
-    window.onclick = function (event) {
-        if (!event.target.matches('.dropbtn')) {
-
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                }
-            }
-        }
-    }
-
-    $(".dropbtn").click(myFunction);
-
-    $(".dropdown-content div").click(function () {
-        var textVal = $(this).text();
+    $(".web-sites").click(function () {
+        var url = $(this).val();
         var keyword = $(".topic-label").text();
         var relatedKeyword = $(".selected").text();
-        if (textVal == " Google") {
-            $(".searching-btn").attr("href", "https://www.google.co.jp/search?q=" + keyword + " " + relatedKeyword);
-        } else if (textVal == " Twitter") {
-            $(".searching-btn").attr("href", "https://twitter.com/search?q=" + keyword + " " + relatedKeyword);
-        } else if (textVal == " Facebook") {
-            $(".searching-btn").attr("href", "https://www.facebook.com/search/top/?q=" + keyword + " " + relatedKeyword);
-        } else if (textVal == " YAHOO!テレビ") {
-            $(".searching-btn").attr("href", "https://tv.yahoo.co.jp/search/?q=" + keyword + " " + relatedKeyword);
-        }
-        var buttons = $(".dropdown-content div");
-        for (let index = 0; index < buttons.length; index++) {
-            const element = buttons[index];
-            $(element).removeClass("hidden-option");
-        }
-        $(this).addClass("hidden-option");
-        $(".dropbtn").text(textVal);
+        $(".searching-btn").attr("href", url + keyword + " " + relatedKeyword);
     });
 
     $(".NHK-btn").click(function () {

@@ -22,12 +22,12 @@
 <body>
     <div id="mySidebar" class="sidebar">
         <div class="logo"><img src="/img/logo.PNG" alt="logo"></div>
-        <div class="app-name">キーワード分析</div>
+        <div class="app-name">キーワード</div>
         <div class="links">
-            <span class="portal-button" id="first-div">ポータル</span>
-            <span class="second-button" id="second-div">キーワード検索</span>
-            <span class="third-button" id="third-div">キーワード分析</span>
-            <span class="forth-button" id="forth-div">Contact</span>
+            <a href="/?div=first-div" target="_blank">ポータル</a>
+            <a href="/?div=second-div" target="_blank">キーワード分析</a>
+            <a href="/?div=third-div" target="_blank">キーワード予測</a>
+            <a href="/?div=forth-div" target="_blank">設定</a>
         </div>
     </div>
 
@@ -50,30 +50,30 @@
                     <div class="keywords">
                         <div class="labels">
                             <label class="keyword-panel">
-                                <span class="label">キーワード 1：</span>
+                                <span class="label">キーワード：　</span>
                                 <input type="text" class="keyword form-control" aria-describedby="button-addon2">
                                 <button class="related-btn btn btn-primary">関連分析開始</button>
                             </label>
                             <label class="keyword-panel option">
-                                <span class="label">キーワード 2：</span>
-                                <input type="text" class="keyword form-control" aria-describedby="button-addon2">
-                                <button class="related-btn btn btn-primary">関連分析開始</button>
-                                <span class="delete-btn" data-toggle="tooltip" data-placement="right" title="このキーワードを削除する">X</span>
-                            </label>
-                            <label class="keyword-panel option">
-                                <span class="label">キーワード 3：</span>
+                                <span class="label">キーワード：　</span>
                                 <input type="text" class="keyword form-control" aria-describedby="button-addon2">
                                 <button class="related-btn btn btn-primary">関連分析開始</button>
                                 <span class="delete-btn" data-toggle="tooltip" data-placement="right" title="このキーワードを削除する">X</span>
                             </label>
                             <label class="keyword-panel option">
-                                <span class="label">キーワード 4：</span>
+                                <span class="label">キーワード：　</span>
                                 <input type="text" class="keyword form-control" aria-describedby="button-addon2">
                                 <button class="related-btn btn btn-primary">関連分析開始</button>
                                 <span class="delete-btn" data-toggle="tooltip" data-placement="right" title="このキーワードを削除する">X</span>
                             </label>
                             <label class="keyword-panel option">
-                                <span class="label">キーワード 5：</span>
+                                <span class="label">キーワード：　</span>
+                                <input type="text" class="keyword form-control" aria-describedby="button-addon2">
+                                <button class="related-btn btn btn-primary">関連分析開始</button>
+                                <span class="delete-btn" data-toggle="tooltip" data-placement="right" title="このキーワードを削除する">X</span>
+                            </label>
+                            <label class="keyword-panel option">
+                                <span class="label">キーワード：　</span>
                                 <input type="text" class="keyword form-control" aria-describedby="button-addon2">
                                 <button class="related-btn btn btn-primary">関連分析開始</button>
                                 <span class="delete-btn" data-toggle="tooltip" data-placement="right" title="このキーワードを削除する">X</span>
@@ -98,18 +98,14 @@
                         <label>選択されたキーワード：<span class="selected"></span></label>
                     </div>
                     <div class="searching">
-                        <div class="dropdown">
-                            <button class="dropbtn">Google</button>
-                            <span>にて</span>
-                            <a href="https://www.google.co.jp/search?q=" target="_blank" class="searching-btn btn btn-primary">選択されたキーワードを検索</a>
-                            <div id="myDropdown" class="dropdown-content">
-                                <div class="hidden-option"><img class="icon-img" src="/img/icon_google.jpg" alt="Google">
-                                    Google</div>
-                                <div><img class="icon-img" src="/img/icon_facebook.png" alt="Facebook"> Facebook</div>
-                                <div><img class="icon-img" src="/img/icon_twitter.jpg" alt="Twitter"> Twitter</div>
-                                <div><img class="icon-img" src="/img/icon_yahoo.png" alt="YAHOO!"> YAHOO!テレビ</div>
-                            </div>
-                        </div>
+                        <select class="web-sites">
+                            <option value="https://www.google.co.jp/search?q=">Google</option>
+                            <option value="https://www.facebook.com/search/top/?q=">Facebook</option>
+                            <option value="https://twitter.com/search?q=">Twitter</option>
+                            <option value="https://tv.yahoo.co.jp/search/?q=">YAHOO!テレビ</option>
+                        </select>
+                        <span>にて</span>
+                        <a href="https://www.google.co.jp/search?q=" target="_blank" class="searching-btn btn btn-primary">選択されたキーワードを検索</a>
                     </div>
                 </div>
                 <div class="NHK-area">
