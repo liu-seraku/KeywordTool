@@ -23,18 +23,29 @@ $(function () {
 
     var firstInputElm = $("input.keyword")[0];
     $(firstInputElm).val(keyword);
-    initialRelatedKwd();
 
     function openNav() {
-        document.getElementById("mySidebar").style.width = "13%";
-        document.getElementById("main").style.marginLeft = "13%";
+        document
+            .getElementById("mySidebar")
+            .style
+            .width = "13%";
+        document
+            .getElementById("main")
+            .style
+            .marginLeft = "13%";
         $(this).hide();
         $(".left").show();
     }
 
     function closeNav() {
-        document.getElementById("mySidebar").style.width = "0";
-        document.getElementById("main").style.marginLeft = "0";
+        document
+            .getElementById("mySidebar")
+            .style
+            .width = "0";
+        document
+            .getElementById("main")
+            .style
+            .marginLeft = "0";
         $(this).hide();
         $(".right").show();
     }
@@ -48,7 +59,7 @@ $(function () {
         $(".NHK-keyword").val(textVal);
         var keyword = $(".topic-label").text();
         var url = $(".web-sites").val();
-        $(".searching-btn").attr("href", url + keyword + " " +textVal);
+        $(".searching-btn").attr("href", url + keyword + " " + textVal);
     }
 
     function drawGraph(keyword, jsonObj) {
@@ -109,6 +120,8 @@ $(function () {
             });
         }
 
+        $(".process-graft").toggle();
+
     }
 
     function interestOverTime(keyword) {
@@ -116,11 +129,10 @@ $(function () {
         var startTime = $(".start-date").val();
         var endTime = $(".end-date").val();
         const xhr = new XMLHttpRequest();
-        const url = '/interestOverTime/' + keyword + '?' + 'geo=' + 'JP' + '&' + 'startTime=' + startTime + '&' + 'endTime=' + endTime;
+        const url = '/interestOverTime/' + keyword + '?geo=JP&startTime=' + startTime + '&endTime=' + endTime;
         xhr.responseType = 'json';
         xhr.onreadystatechange = () => {
             if (xhr.readyState === XMLHttpRequest.DONE) {
-                console.log(xhr.response);
                 drawGraph(keyword, xhr.response);
             }
         };
@@ -136,38 +148,62 @@ $(function () {
         var startTime = $(".start-date").val();
         var endTime = $(".end-date").val();
         const xhr = new XMLHttpRequest();
-        const url = '/relatedTopics/' + keyword + '?' + 'geo=' + 'JP' + '&' + 'startTime=' + startTime + '&' + 'endTime=' + endTime;
+        const url = '/relatedTopics/' + keyword + '?geo=JP&startTime=' + startTime + '&endTime=' + endTime;
         xhr.responseType = 'json';
         xhr.onreadystatechange = () => {
             if (xhr.readyState === XMLHttpRequest.DONE) {
-                for (let index = 0; index < 15; index++) {
-                    if (xhr.response.default.rankedList[0].rankedKeyword[index]) {
-                        const topic = xhr.response.default.rankedList[0].rankedKeyword[index].topic.title;
-                        var topicDom = $("<span class=\"tpc\"></span>").text(topic);
-                        $(".tpcs").append(topicDom);
+                if (!xhr.response) {
+                    var notFoundSpan1 = $("<span class=\"not-found\">関連キーワードが見つかりませんでした</span>");
+                    var notFoundSpan2 = $("<span class=\"not-found\">関連キーワードが見つかりませんでした</span>");
+                    $(".tpcs").append(notFoundSpan1);
+                    var liElement = $("<li></li>").append(notFoundSpan2);
+                    $('.hit-tpcs').append(liElement);
+                } else {
+                    var relatedList = xhr.response.default.rankedList[0].rankedKeyword;
+                    var hitList = xhr.response.default.rankedList[1].rankedKeyword;
+
+                    if (relatedList.length == 0) {
+                        var notFoundSpan1 = $("<span class=\"not-found\">関連キーワードが見つかりませんでした</span>");
+                        $(".tpcs").append(notFoundSpan1);
+                    } else {
+                        for (let index = 0; index < relatedList.length; index++) {
+                            if (xhr.response.default.rankedList[0].rankedKeyword[index]) {
+                                const topic = xhr.response.default.rankedList[0].rankedKeyword[index].topic.title;
+                                var topicDom = $("<span class=\"tpc\"></span>").text(topic);
+                                $(".tpcs").append(topicDom);
+                            }
+
+                        }
                     }
 
+                    if (hitList.length == 0) {
+                        var notFoundSpan2 = $("<span class=\"not-found\">関連キーワードが見つかりませんでした</span>");
+                        var liElement = $("<li></li>").append(notFoundSpan2);
+                        $('.hit-tpcs').append(liElement);
+                    } else {
+                        var hitTopics = xhr.response.default.rankedList[1].rankedKeyword;
+                        for (let index = 0; index < hitTopics.length; index++) {
+                            var topicTitle = hitTopics[index].topic.title;
+                            var hitStatus = hitTopics[index].formattedValue;
+                            var topicSpan = $("<span class=\"tpc\"></span>").text(topicTitle);
+                            var hitSpan = $("<span class=\"hit\"></span>").text(hitStatus);
+                            var liElement = $("<li></li>")
+                                .append(topicSpan)
+                                .append(hitSpan);
+                            $('.hit-tpcs').append(liElement);
+                        }
+                    }
+
+                    $(".topics span.tpc")
+                        .click(function () {
+                            activeSpan(this);
+                        });
                 }
-                var hitTopics = xhr.response.default.rankedList[1].rankedKeyword;
-                for (let index = 0; index < hitTopics.length; index++) {
-                    var topicTitle = hitTopics[index].topic.title;
-                    var hitStatus = hitTopics[index].formattedValue;
-                    var topicSpan = $("<span class=\"tpc\"></span>").text(topicTitle);
-                    var hitSpan = $("<span class=\"hit\"></span>").text(hitStatus);
-                    var liElement = $("<li></li>").append(topicSpan).append(hitSpan);
-                    $('.hit-tpcs').append(liElement);
-                }
-                $(".topics span.tpc").click(function () {
-                    activeSpan(this);
-                });
+                $(".process-related").toggle();
             }
         };
         xhr.open('GET', url);
         xhr.send();
-    }
-
-    function initialRelatedKwd() {
-        relatedTopics(keyword);
     }
 
     function addKeyPanel() {
@@ -176,82 +212,106 @@ $(function () {
     }
 
     function generateTbody() {
-        for (let index = 0; index < 8; index++) {
+        $(".NHK-tbody").empty();
+        var serviceList = {
+            g1: "ＮＨＫ総合１",
+            e1: "ＮＨＫＥテレ１",
+            e4: "ＮＨＫワンセグ２",
+            s1: "ＮＨＫＢＳ１",
+            s3: "ＮＨＫＢＳプレミアム"
+        }
+        var keyword = $(".NHK-keyword").val();
+        var serviceId = $(".NHK-service").val();
+        var serviceName = serviceList[serviceId];
+        for (let day = 0; day < 8; day++) {
             var targetDay = new Date();
-            targetDay.setDate(targetDay.getDate() + index);
-            targetDayStr = targetDay.toISOString();
-            targetDayStr = targetDayStr.slice(0, 10);
-            var service = $(".NHK-service").val();
-            const xhr = new XMLHttpRequest();
-            const url = "https://api.nhk.or.jp/v2/pg/list/130/" + service + "/" + targetDayStr + ".json?key=PyID7ZVHHUOwBjmIDmaAONeOMBzzAABf";
-            xhr.responseType = 'json';
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    console.log(xhr.response);
-                    var showList = xhr.response.list[service];
-                    var tableList = new Array();
-                    var keyword = $(".NHK-keyword").val();
-                    for (let index = 0; index < showList.length; index++) {
-                        var information = showList[index].act + showList[index].content + showList[index].subtitle + showList[index].title;
-                        var foundShow = information.indexOf(keyword);
-                        if (foundShow !== -1) {
-                            tableList.push(showList[index]);
-                        }
-                    }
-                    if (tableList.length !== 0) {
-                        for (let index = 0; index < tableList.length; index++) {
-                            var showTr = $("<tr class=\"NHK-result\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"番組の詳細を表示・非表示\"></tr>");
-                            var showTime = tableList[index].start_time;
-                            var showEndTime = tableList[index].end_time;
-                            var showDay = showTime.slice(0, 10);
-                            var showStart = showTime.slice(11, 16);
-                            var showEnd = showEndTime.slice(11, 16);
-                            var showTitle = tableList[index].title;
+            targetDay.setDate(targetDay.getDate() + day);
+            var targetDayISO = targetDay.toISOString();
+            targetDayISO = targetDayISO.slice(0, 10);
+            var service = serviceId;
+            var baseDate = targetDayISO;
 
-                            var showDayTd = $("<td></td>").text(showDay);
-                            var showStartTd = $("<td></td>").text(showStart);
-                            var showEndTd = $("<td></td>").text(showEnd);
-                            var showTitleTd = $("<td class=\"show-title\"></td>").text(showTitle);
-
-                            showTr.append(showDayTd).append(showStartTd).append(showEndTd).append(showTitleTd);
-                            $(".NHK-tbody").append(showTr);
-                            $('*[data-toggle="tooltip"]').tooltip();
-
-                            var showDetail = $("<tr class=\"show-detail\"></tr>");
-                            var detailTd = $("<td colspan=\"4\"></td>");
-                            var subtitleTDiv = $("<div style=\"margin: 1rem; font-weight: bolder;\">サブタイトル</div>");
-                            var subtitleDDiv = $("<div style=\"margin: 1rem;\"></div>").text(tableList[index].subtitle);
-                            var contentTDiv = $("<div style=\"margin: 1rem; font-weight: bolder;\">コンテンツ</div>");
-                            var contentDDiv = $("<div style=\"margin: 1rem;\"></div>").text(tableList[index].content);
-                            var actTDiv = $("<div style=\"margin: 1rem; font-weight: bolder;\">出演者</div>");
-                            var actDDiv = $("<div style=\"margin: 1rem;\"></div>").text(tableList[index].act);
-                            detailTd.append(subtitleTDiv).append(subtitleDDiv).append(contentTDiv).append(contentDDiv).append(actTDiv).append(actDDiv);
-                            showDetail.append(detailTd);
-                            $(".NHK-tbody").append(showDetail);
-
-                            showTr.click(function () {
-                                $(this).next().toggle();
-                            });
-
-                        }
-                    } else {
-                        var showTr = $("<tr></tr>");
-                        var showTd = $("<td colspan=\"4\">該当番組はありません</td>");
-                        showTr.append(showTd);
+            var getFileReq = new XMLHttpRequest();
+            var getFileReqUrl = "readFile/?service=" + service + "&baseDate=" + baseDate;
+            getFileReq.open('GET', getFileReqUrl, false);
+            getFileReq.send(null);
+            if (getFileReq.status === 200) {
+                var showListJson = JSON
+                    .parse(getFileReq.response)
+                    .list[service];
+                showNums = showListJson.length;
+                for (let showNum = 0; showNum < showNums; showNum++) {
+                    var show = showListJson[showNum];
+                    var showTitle = show.title;
+                    var showSubtitle = show.subtitle;
+                    var showContent = show.content;
+                    var showAct = show.act;
+                    var showDetailStr = showTitle + showSubtitle + showContent + showAct;
+                    var showStartTime = show.start_time.slice(11, 16);
+                    var showEndTime = show.end_time.slice(11, 16);
+                    var showDate = baseDate;
+                    var foundShow = showDetailStr.indexOf(keyword);
+                    if (foundShow !== -1) {
+                        var showTr = $("<tr class=\"NHK-result\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"番組の詳細を表示・非表示\"></tr>");
+                        var showServiceTd = $("<td></td>").text(serviceName);
+                        var showDayTd = $("<td></td>").text(showDate);
+                        var showStartTd = $("<td></td>").text(showStartTime);
+                        var showEndTd = $("<td></td>").text(showEndTime);
+                        var showTitleTd = $("<td class=\"show-title\"></td>").text(showTitle);
+                        showTr.append(showServiceTd).append(showDayTd).append(showStartTd).append(showEndTd).append(showTitleTd);
                         $(".NHK-tbody").append(showTr);
+                        $('*[data-toggle="tooltip"]').tooltip();
+
+                        var showDetailTr = $("<tr class=\"show-detail\"></tr>");
+                        var detailTd = $("<td colspan=\"5\"></td>");
+                        var subtitleTDiv = $("<div style=\"margin: 1rem; font-weight: bolder;\">サブタイトル</div>");
+                        var subtitleDDiv = $("<div style=\"margin: 1rem;\"></div>").text(showSubtitle);
+                        var contentTDiv = $("<div style=\"margin: 1rem; font-weight: bolder;\">コンテンツ</div>");
+                        var contentDDiv = $("<div style=\"margin: 1rem;\"></div>").text(showContent);
+                        var actTDiv = $("<div style=\"margin: 1rem; font-weight: bolder;\">出演者</div>");
+                        var actDDiv = $("<div style=\"margin: 1rem;\"></div>").text(showAct);
+                        detailTd.append(subtitleTDiv).append(subtitleDDiv).append(contentTDiv).append(contentDDiv).append(actTDiv).append(actDDiv);
+                        showDetailTr.append(detailTd);
+                        $(".NHK-tbody").append(showDetailTr);
+
+                        showTr.click(function () {
+                            $(this).next().toggle();
+                        });
                     }
                 }
-            };
-            xhr.open('GET', url);
-            xhr.send();
+            }
         }
+
+        var resultCount = $("tr").length - 1;
+        if (resultCount == 0) {
+            var showDetailTr = $("<tr></tr>");
+            var detailTd = $("<td colspan=\"5\">該当番組はありません。</td>");
+            showDetailTr.append(detailTd);
+            $(".NHK-tbody").append(showDetailTr);
+        }
+
+        $(".processing").toggle();
     }
 
     $(".right").click(openNav);
     $(".left").click(closeNav);
     $(".related-btn").click(function () {
-        var topic = $(this).prev().val();
-        relatedTopics(topic);
+        var topic = $(this)
+            .prev()
+            .val();
+        $(".selected").text(topic);
+        $(".NHK-keyword").val(topic);
+        if (topic !== "") {
+            var writeLogReq = new XMLHttpRequest();
+            var writeLogReqUrl = "writeLog/?keyword=" + topic;
+            writeLogReq.open('GET', writeLogReqUrl, false);
+            writeLogReq.send(null);
+            if (writeLogReq.status === 200) {
+            }
+        }
+
+        $(".process-related").toggle();
+        setTimeout(relatedTopics(topic), 100);
     });
     $(".add-key-btn").click(function () {
         var hiddenKeyNum = $(".keyword-panel.option").length;
@@ -265,11 +325,15 @@ $(function () {
         if (hiddenKeyNum == 0) {
             $(".add-key-btn").show();
         }
-        $(this).prev().prev().val("");
-        $(this).parent().addClass("option");
+        $(this)
+            .prev()
+            .prev()
+            .val("");
+        $(this)
+            .parent()
+            .addClass("option");
     });
-    $(".start-analyze").click(function () {
-        window.location = "#canvas";
+    $(".start-analyze").click(function () {    
         var keywords = new Array();
         var keywordsEle = $("input.keyword");
         for (let index = 0; index < keywordsEle.length; index++) {
@@ -279,7 +343,24 @@ $(function () {
                 keywords.push(oneKeyword);
             }
         }
-        interestOverTime(keywords);
+        if(keywords.length > 0) {
+            window.location = "#canvas";
+            $(".process-graft").toggle();       
+            for (let index = 0; index < keywords.length; index++) {
+                var keyword = keywords[index];
+                if (keyword !== "") {
+                    var writeLogReq = new XMLHttpRequest();
+                    var writeLogReqUrl = "writeLog/?keyword=" + keyword;
+                    writeLogReq.open('GET', writeLogReqUrl, false);
+                    writeLogReq.send(null);
+                    if (writeLogReq.status === 200) {      
+                    }
+                }
+            }
+            setTimeout(interestOverTime(keywords), 100);
+        }else{
+            alert("図表分析のキーワードを入力してください");
+        }
     });
 
     $(".web-sites").click(function () {
@@ -287,11 +368,37 @@ $(function () {
         var keyword = $(".topic-label").text();
         var relatedKeyword = $(".selected").text();
         $(".searching-btn").attr("href", url + keyword + " " + relatedKeyword);
+        if (url == "https://www.facebook.com/search/top/?q=") {
+            $(".facebook-explanation").show();
+        } else {
+            $(".facebook-explanation").hide();
+        }
     });
 
     $(".NHK-btn").click(function () {
-        $(".NHK-tbody").empty();
-        generateTbody();
+        var keyword = $(".NHK-keyword").val();
+        $(".NHK-key").text(keyword);
+        if (keyword !== "") {
+            var writeLogReq = new XMLHttpRequest();
+            var writeLogReqUrl = "writeLog/?keyword=" + keyword;
+            writeLogReq.open('GET', writeLogReqUrl, false);
+            writeLogReq.send(null);
+            if (writeLogReq.status === 200) {
+            }
+        }
+        $(".processing").toggle();
+        setTimeout(generateTbody, 100);
     });
 
+    $(".searching-btn").click(function(){
+        var keyword = $(".selected").text();
+        if (keyword !== "") {
+            var writeLogReq = new XMLHttpRequest();
+            var writeLogReqUrl = "writeLog/?keyword=" + keyword;
+            writeLogReq.open('GET', writeLogReqUrl, false);
+            writeLogReq.send(null);
+            if (writeLogReq.status === 200) {
+            }
+        }
+    });
 });

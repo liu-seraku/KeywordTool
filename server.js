@@ -151,6 +151,64 @@ app.get('/getTrendKeywords', (req, respond, next) => {
   }, error, success);
 });
 
+app.get('/writeJSON', (req, res, next) => {
+  var part = req.query.part;
+  var partStr = req.query.data;
+  var service = req.query.service;
+  var baseDate = req.query.baseDate;
+  const fs = require('fs');
+  if(part == 0){
+    fs.writeFileSync("NHK-show-list/" + service + "-" + baseDate + ".json", partStr);
+    res.status(201).send("Done");
+  } else {
+    var showStr = fs.readFileSync("NHK-show-list/" + service + "-" + baseDate + ".json");
+    showStr = showStr + partStr;
+    fs.writeFileSync("NHK-show-list/" + service + "-" + baseDate + ".json", showStr);
+    res.status(201).send("Done");
+  }
+});
+
+app.get('/readFile', (req, res, next) => {
+  var service = req.query.service;
+  var baseDate = req.query.baseDate;
+  const fs = require('fs');
+  var showStr = fs.readFileSync("NHK-show-list/" + service + "-" + baseDate + ".json");
+  res.status(200).send(showStr);
+});
+
+app.get('/writeLog', (req, res, next) => {
+  var keyword = req.query.keyword;
+  const fs = require('fs');
+  var fullLogStr = fs.readFileSync("log/keyword-log.json");
+  var fullLogJson = JSON.parse(fullLogStr);
+  var found = -1;
+  for (let index = 0; index < fullLogJson.length; index++) {
+    var keywordDetail = fullLogJson[index];
+    if(keywordDetail.keyword == keyword) {
+      found = index;
+    }
+  }
+  if (found !== -1) {
+    fullLogJson[found].count = parseInt(fullLogJson[found].count) + 1;
+  } else {
+    var newKeyword = {
+      id : fullLogJson.length,
+      keyword : keyword,
+      count : 1
+    };
+    fullLogJson.push(newKeyword);
+  }
+  var newLogStr = JSON.stringify(fullLogJson);
+  fs.writeFileSync("log/keyword-log.json", newLogStr);
+  res.status(200).send();
+});
+
+app.get('/readLog', (req, res, next) => {
+  const fs = require('fs');
+  var logStr = fs.readFileSync("log/keyword-log.json");
+  res.status(200).send(logStr);
+});
+
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });

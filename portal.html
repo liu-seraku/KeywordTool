@@ -29,7 +29,7 @@
                 <span class="portal-button active" id="first-div">ポータル</span>
                 <span class="second-button" id="second-div">キーワード分析</span>
                 <span class="third-button" id="third-div">キーワード予測</span>
-                <span class="forth-button" id="forth-div">設定</span>
+                <span class="forth-button" id="forth-div">設定・ログ</span>
             </div>
         </div>
         <div class="main">
@@ -51,11 +51,12 @@
                             </select>
                             <label>にて</label>
                             <a href="https://twitter.com/search?q=" target="_blank" class="portal-sites-btn btn btn-primary">キーワードを検索</a>
+                            <label class="facebook-explanation">Facebookで検索する場合、事前にログインする必要があります。</label>
                         </div>
                     </div>
                     <div class="keywords-div">
                         <h2>
-                            本日のTwitterトレンド
+                            Twitter Trend
                         </h2>
                         <div class="keywords">
                         </div>
@@ -66,9 +67,9 @@
                 <h1>キーワード分析</h1>
                 <div class="input-panel">
                     <form action="/keyword-analyze.html">
-                        <input type="text" class="form-control" placeholder="分析対象のキーワードを入力してください" aria-label="Recipient's username"
-                            aria-describedby="button-addon2" name="keyword">
-                        <input type="submit" class="btn btn-outline-primary" value="分析開始">
+                        <input type="text" class="analyze-input form-control" placeholder="分析対象のキーワードを入力してください"
+                            aria-label="Recipient's username" aria-describedby="button-addon2" name="keyword">
+                        <input type="submit" class="start-analyze btn btn-outline-primary" value="分析開始">
                     </form>
                     <h2>Twitter Trend</h2>
                     <div class="topics">
@@ -79,10 +80,28 @@
                 <h1>キーワード予測</h1>
             </div>
             <div class="forth-div">
-                <h1>設定</h1>
+                <h1>設定・ログ</h1>
                 <div class="setting-area">
                     <div class="NHK-setting">
                         <h2>NHK番組表API</h2>
+                        <div class="NHK-update">
+                            <button class="update-btn btn btn-primary">番組表を更新</button>
+                            <div class="processing"><span>処理中です、完了まで画面を閉じないでください</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="log-area">
+                    <h2>検索キーワード - ログ</h2>
+                    <div class="log-detail">
+                        <div class="log-btn-area">
+                            <div>
+                                <button class="log-btn btn btn-primary">ログ導出</button>
+                                <input type="text" class="keyword-filter form-control" aria-describedby="button-addon2"
+                                    placeholder="キーワードで絞り込み">
+                            </div>
+                        </div>
+                        <div class="logs">
+                        </div>
                     </div>
                 </div>
             </div>

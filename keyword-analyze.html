@@ -27,7 +27,7 @@
             <a href="/?div=first-div" target="_blank">ポータル</a>
             <a href="/?div=second-div" target="_blank">キーワード分析</a>
             <a href="/?div=third-div" target="_blank">キーワード予測</a>
-            <a href="/?div=forth-div" target="_blank">設定</a>
+            <a href="/?div=forth-div" target="_blank">設定・ログ</a>
         </div>
     </div>
 
@@ -89,10 +89,15 @@
                     <div class="topics">
                         <label>Google 関連キーワード</label>
                         <div class="tpcs">
+                            <span class="first-tpc">「関連キーワード分析」の結果はここで表示されます</span>
                         </div>
                         <label>Google 関連トレンド</label>
                         <ul class="hit-tpcs">
+                            <li>
+                                <span class="first-tpc">「関連トレンド分析」の結果はここで表示されます</span>
+                            </li>
                         </ul>
+                        <div class="process-related"><span>処理中 。。。</span></div>
                     </div>
                     <div class="direct">
                         <label>選択されたキーワード：<span class="selected"></span></label>
@@ -106,6 +111,7 @@
                         </select>
                         <span>にて</span>
                         <a href="https://www.google.co.jp/search?q=" target="_blank" class="searching-btn btn btn-primary">選択されたキーワードを検索</a>
+                        <div class="facebook-explanation">Facebookで検索する場合、事前にログインする必要があります。</div>
                     </div>
                 </div>
                 <div class="NHK-area">
@@ -126,11 +132,12 @@
                             <button class="NHK-btn btn btn-primary">番組検索開始</button>
                         </label>
                     </div>
-                    <label>　番組表：</label>
+                    <label>　番組表検索キーワード： <span class="NHK-key"></span></label>
                     <div class="NHK-shows">
                         <table>
                             <thead>
                                 <tr>
+                                    <th style="width: 12rem;">サービス</th>
                                     <th style="width: 9rem;">日付</th>
                                     <th style="width: 7rem;">開始時間</th>
                                     <th style="width: 7rem;">終了時間</th>
@@ -140,11 +147,15 @@
                             <tbody class="NHK-tbody">
                             </tbody>
                         </table>
+                        <div class="processing"><span>処理中 。。。</span></div>
                     </div>
                 </div>
                 <div class="result-area">
                     <h2>図表分析結果</h2>
-                    <canvas id="canvas"></canvas>
+                    <div class="canvas-area">
+                            <canvas id="canvas"></canvas>
+                            <div class="process-graft"><span>処理中 。。。</span></div>
+                    </div>
                 </div>
             </div>
 

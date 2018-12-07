@@ -130,9 +130,12 @@ body {
 .topics {
     margin-top: 16px;
     margin-bottom: 16px;
+    position: relative;
 }
 
 .tpcs {
+    max-height: 112px;
+    overflow: auto;
     display: flex;
     justify-content: left;
     flex-wrap: wrap;
@@ -186,8 +189,9 @@ span.selected {
 }
 
 .NHK-shows {
-    max-height: 300px;
+    height: 300px;
     overflow: auto;
+    position: relative;
 }
 
 .NHK-area {
@@ -220,7 +224,7 @@ span.selected {
 
 table {
     width: 95%;
-    margin-left: 1rem;
+    margin: 0px 1rem;
     text-align: center;
     border: solid 1px #007bff;
     color: #007bff;
@@ -389,4 +393,65 @@ canvas {
 .searching-btn {
     vertical-align: baseline;
     margin-left: 16px;
+}
+
+.facebook-explanation {
+    display: none;
+    margin-top: 8px;
+    color: red;
+}
+
+.process-related {
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    padding-top: 100px;
+    background-color: gray;
+    opacity: .8;
+    position: absolute;
+    top: 0px;
+    z-index: 100;
+    display: none;
+}
+.processing {
+    text-align: center;
+    width: 95%;
+    margin-left: 1rem;
+    font-weight: bolder;
+    background-color: gray;
+    opacity: .8;
+    height: 300px;
+    padding: 150px 0px;
+    position: absolute;
+    top: 0px;
+    z-index: 100;
+    display: none;
+}
+
+.canvas-area {
+    position: relative;
+}
+
+.process-graft {
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    background-color: gray;
+    opacity: .8;
+    position: absolute;
+    top: 0px;
+    font-weight: bold;
+    padding-top: 300px;
+    display: none;
+}
+
+.first-tpc {
+    color: #007bff;
+}
+
+.not-found {
+    background-color: gray;
+    color: white;
 }

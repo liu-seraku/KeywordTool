@@ -52,7 +52,8 @@ body {
 }
 
 .sidebar span.active {
-  color: black;
+  color: blue;
+  font-weight: bold;
   background-color: white;
 }
 
@@ -67,7 +68,7 @@ body {
 }
 
 
-.main > div {
+.main>div {
   display: none;
 }
 
@@ -78,8 +79,15 @@ h1 {
   font-weight: bolder;
 }
 
+.facebook-explanation {
+  display: none;
+  margin-top: 8px;
+  color: red;
+}
+
 .content h2,
-.setting-area h2 {
+.setting-area h2,
+.log-area h2 {
   border-bottom: solid 2px #007bff;
   border-left: solid 8px #007bff;
   font-size: 20px;
@@ -195,4 +203,58 @@ h1 {
   background-color: #7bbbff;
   border-color: #7bbbff;
   color: white;
+}
+
+.NHK-update {
+  position: relative;
+}
+
+.processing {
+  width: 100%;
+  text-align: center;
+  font-weight: bolder;
+  background-color: gray;
+  opacity: .8;
+  position:absolute;
+  top: 0px;
+  z-index: 100;
+  height: 100%;
+  padding: 10px;
+  display: none;
+}
+
+.log-area {
+  margin-top: 40px;
+}
+
+.keyword-filter {
+  display: inline;
+  width: 80%;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.logs {
+  width: 95%;
+  margin-top: 36px;
+  margin-left: 1rem;
+  overflow: auto;
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+  max-height: 150px;
+}
+
+.one-log {
+  display: inline;
+  border: solid 1px #007bff;
+  color: #007bff;
+  font-size: 16px;
+  padding: 4px 8px;
+  margin-bottom: 4px;
+  margin-right: 4px;
+}
+
+.not-the-one {
+  display: none;
 }
