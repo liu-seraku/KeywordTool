@@ -16,6 +16,7 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/css/style.css">
     <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/Chart.js"></script>
     <script src="/js/script.js"></script>
 </head>
 
@@ -87,15 +88,60 @@
                         <div class="NHK-update">
                             <button class="update-btn btn btn-primary">番組表を更新</button>
                             <div class="processing"><span>処理中です、完了まで画面を閉じないでください</span></div>
+                            <div class="updating-log">
+                                <label>更新ログ照会：</label>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 11rem;">日付</th>
+                                            <th>開始時刻</th>
+                                            <th>完了時刻</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="update-tbody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nhk-search-area">
+                    <h2>NHK検索キーワード - ログ照会</h2>
+                    <div class="nhk-search-input">
+                        <div style="margin-left:1rem">
+                            <input type="text" class="search-input form-control" aria-describedby="button-addon2"
+                                placeholder="確認したいキーワードを入力してください">
+                                <select class="NHK-service">
+                                    <option value="g1">ＮＨＫ総合１</option>
+                                    <option value="e1">ＮＨＫＥテレ１</option>
+                                    <option value="e4">ＮＨＫワンセグ２</option>
+                                    <option value="s1">ＮＨＫＢＳ１</option>
+                                    <option value="s3">ＮＨＫＢＳプレミアム</option>
+                                </select>
+                            <button class="nhk-search-log btn btn-primary">ログを確認</button>
+                        </div>
+                        <label class="search-lable">サービス別番組数照会： <span class="search-span"></span></label>
+                        <div class="search-graph">
+                            <canvas id="canvas"></canvas>
+                            <table style="margin-top: 40px;">
+                                <thead>
+                                    <th style="width: 12rem;">サービス</th>
+                                    <th style="width: 7rem;">日付</th>
+                                    <th>番組数</th>
+                                </thead>
+                                <tbody class="search-tbody">
+                                </tbody>
+                            </table>
+                            <div class="process-NHK"><span>処理中 。。。</span></div>
                         </div>
                     </div>
                 </div>
                 <div class="log-area">
-                    <h2>検索キーワード - ログ</h2>
+                    <h2>全体検索キーワード - ログ照会</h2>
                     <div class="log-detail">
                         <div class="log-btn-area">
-                            <div>
-                                <button class="log-btn btn btn-primary">ログ導出</button>
+                            <div style="margin-left:1rem">
+                                <button class="log-btn btn btn-primary">ログを確認</button>
                                 <input type="text" class="keyword-filter form-control" aria-describedby="button-addon2"
                                     placeholder="キーワードで絞り込み">
                             </div>

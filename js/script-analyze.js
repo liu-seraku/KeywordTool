@@ -211,6 +211,17 @@ $(function () {
         $(hiddenKeyEle).removeClass("option");
     }
 
+    function setNhkSearchLog(keyword, service, baseDate, showCount) {
+        const request = new XMLHttpRequest();
+        const url = "/setNhkSearchLog?keyword=" + keyword + "&service=" + service + "&baseDate=" + baseDate + "&showCount=" + 
+        showCount;
+        request.open('GET', url, false);
+        request.send(null);
+        if (request.status === 200) {
+            return null;
+        }
+    }
+
     function generateTbody() {
         $(".NHK-tbody").empty();
         var serviceList = {
@@ -240,6 +251,7 @@ $(function () {
                     .parse(getFileReq.response)
                     .list[service];
                 showNums = showListJson.length;
+                var showCount = 0;
                 for (let showNum = 0; showNum < showNums; showNum++) {
                     var show = showListJson[showNum];
                     var showTitle = show.title;
@@ -252,6 +264,7 @@ $(function () {
                     var showDate = baseDate;
                     var foundShow = showDetailStr.indexOf(keyword);
                     if (foundShow !== -1) {
+                        showCount = showCount + 1;
                         var showTr = $("<tr class=\"NHK-result\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"番組の詳細を表示・非表示\"></tr>");
                         var showServiceTd = $("<td></td>").text(serviceName);
                         var showDayTd = $("<td></td>").text(showDate);
@@ -279,6 +292,7 @@ $(function () {
                         });
                     }
                 }
+                setNhkSearchLog(keyword, service, baseDate, showCount);
             }
         }
 
@@ -306,8 +320,7 @@ $(function () {
             var writeLogReqUrl = "writeLog/?keyword=" + topic;
             writeLogReq.open('GET', writeLogReqUrl, false);
             writeLogReq.send(null);
-            if (writeLogReq.status === 200) {
-            }
+            if (writeLogReq.status === 200) {}
         }
 
         $(".process-related").toggle();
@@ -333,7 +346,7 @@ $(function () {
             .parent()
             .addClass("option");
     });
-    $(".start-analyze").click(function () {    
+    $(".start-analyze").click(function () {
         var keywords = new Array();
         var keywordsEle = $("input.keyword");
         for (let index = 0; index < keywordsEle.length; index++) {
@@ -343,9 +356,9 @@ $(function () {
                 keywords.push(oneKeyword);
             }
         }
-        if(keywords.length > 0) {
+        if (keywords.length > 0) {
             window.location = "#canvas";
-            $(".process-graft").toggle();       
+            $(".process-graft").toggle();
             for (let index = 0; index < keywords.length; index++) {
                 var keyword = keywords[index];
                 if (keyword !== "") {
@@ -353,12 +366,11 @@ $(function () {
                     var writeLogReqUrl = "writeLog/?keyword=" + keyword;
                     writeLogReq.open('GET', writeLogReqUrl, false);
                     writeLogReq.send(null);
-                    if (writeLogReq.status === 200) {      
-                    }
+                    if (writeLogReq.status === 200) {}
                 }
             }
             setTimeout(interestOverTime(keywords), 100);
-        }else{
+        } else {
             alert("図表分析のキーワードを入力してください");
         }
     });
@@ -383,22 +395,20 @@ $(function () {
             var writeLogReqUrl = "writeLog/?keyword=" + keyword;
             writeLogReq.open('GET', writeLogReqUrl, false);
             writeLogReq.send(null);
-            if (writeLogReq.status === 200) {
-            }
+            if (writeLogReq.status === 200) {}
         }
         $(".processing").toggle();
         setTimeout(generateTbody, 100);
     });
 
-    $(".searching-btn").click(function(){
+    $(".searching-btn").click(function () {
         var keyword = $(".selected").text();
         if (keyword !== "") {
             var writeLogReq = new XMLHttpRequest();
             var writeLogReqUrl = "writeLog/?keyword=" + keyword;
             writeLogReq.open('GET', writeLogReqUrl, false);
             writeLogReq.send(null);
-            if (writeLogReq.status === 200) {
-            }
+            if (writeLogReq.status === 200) {}
         }
     });
 });

@@ -1,4 +1,5 @@
 $(function () {
+    var myChart;
 
     var urlParams = new URLSearchParams(location.search);
     var divOpen = urlParams.get('div');
@@ -55,7 +56,47 @@ $(function () {
     xhr.open('GET', url);
     xhr.send();
 
+    getNhkUpdateLog();
+
+
+    function getNhkUpdateLog() {
+        $(".update-tbody").empty();
+        const nhkUpdtLogReq = new XMLHttpRequest();
+        var nhkUpdtLogReqUrl = "/getNhkUpdateLog/";
+        nhkUpdtLogReq.open('GET', nhkUpdtLogReqUrl, false);
+        nhkUpdtLogReq.send(null);
+        if (nhkUpdtLogReq.status === 200) {
+            var logList = JSON.parse(nhkUpdtLogReq.response);
+            for (let index = 0; index < 4; index++) {
+                if (logList[index]) {
+                    const log = logList[index];
+                    var logTr = $("<tr></tr>");
+                    var logDateTd = $("<td></td>").text(log.date);
+                    var logStartTd = $("<td></td>").text(log.start);
+                    var logEndTd = $("<td></td>").text(log.end);
+                    logTr.append(logDateTd).append(logStartTd).append(logEndTd);
+                    $(".update-tbody").prepend(logTr);
+                }
+            }
+        }
+    }
+
+    function setNhkUpdateLog(startTime, endTime) {
+        const setNhkUpdtLogReq = new XMLHttpRequest();
+        var date = startTime.slice(0, 10);
+        var start = startTime.slice(11, 19);
+        var end = endTime.slice(11, 19);
+        var setNhkUpdtLogReqUrl = "/setNhkUpdateLog/?date=" + date + "&start=" + start + "&end=" + end;
+        setNhkUpdtLogReq.open('GET', setNhkUpdtLogReqUrl, false);
+        setNhkUpdtLogReq.send(null);
+        if (setNhkUpdtLogReq.status === 200) {
+            getNhkUpdateLog();
+        }
+    }
+
     function updateShows() {
+        var startoffset = (new Date()).getTimezoneOffset() * 60000;
+        var startTime = (new Date(Date.now() - startoffset)).toISOString();
         var serviceList = ["g1", "e1", "e4", "s1", "s3"];
         for (let serID = 0; serID < serviceList.length; serID++) {
             var serviceName = serviceList[serID];
@@ -84,7 +125,142 @@ $(function () {
             }
         }
         $(".processing").toggle();
+        var Endoffset = (new Date()).getTimezoneOffset() * 60000;
+        var endTime = (new Date(Date.now() - Endoffset)).toISOString();
+        setNhkUpdateLog(startTime, endTime);
     }
+
+    function getNhkSearchLog(keyword, serviceId) {
+        var ctx = document.getElementById("canvas");
+        $(".search-tbody").empty();
+        var keyword = $(".search-input").val();
+        var serviceId = $(".NHK-service").val();
+        var serviceNames = {
+            g1: "ＮＨＫ総合１",
+            e1: "ＮＨＫＥテレ１",
+            e4: "ＮＨＫワンセグ２",
+            s1: "ＮＨＫＢＳ１",
+            s3: "ＮＨＫＢＳプレミアム"
+        };
+        var showLogs = new Array();
+        var request = new XMLHttpRequest();
+        var url = "getNhkSearchLog/?keyword=" + keyword + "&serviceId=" + serviceId;
+        request.open('GET', url, false);
+        request.send(null);
+        if (request.status === 200) {
+            if (request.response !== "not found") {
+                var showLog = JSON.parse(request.response);
+                showLogs.push(showLog);
+            }
+        }
+        if (showLogs.length !== 0) {
+            var labels = new Array();
+            var datasets = new Array();
+            var borderColors = ['rgba(0, 123, 255, 1)', 'rgba(253, 92, 153, 1)', 'rgba(92, 253, 232, 1)', 'rgba(49, 250, 58, 1)', 'rgba(250, 229, 49, 1)'];
+            for (let index = 0; index < showLogs.length; index++) {
+                var showLog = showLogs[index];
+                var data = new Array();
+                for (let i = 0; i < showLog.length; i++) {
+                    var oneLog = showLog[i];
+                    var showDate = oneLog.baseDate;
+                    var foundLabel = labels.indexOf(showDate);
+                    if (foundLabel == -1) {
+                        labels.push(showDate);
+                    }
+                    var showCount = parseInt(oneLog.count);
+                    data.push(showCount);
+
+
+                    var logSerId = showLog[0].service;
+                    var logSerName = serviceNames[logSerId];
+                    var logTr = $("<tr></tr>");
+                    var serTd = $("<td></td>").text(logSerName);
+                    var dateTd = $("<td></td>").text(showDate);
+                    var countTd = $("<td></td>").text(showCount);
+                    logTr.append(serTd).append(dateTd).append(countTd);
+                    $(".search-tbody").append(logTr);
+                }
+                var logSerId = showLog[0].service;
+                var logSerName = serviceNames[logSerId];
+                var dataSet = {
+                    label: logSerName,
+                    data: data,
+                    borderColor: borderColors[index],
+                    borderWidth: 2
+                };
+                datasets.push(dataSet);
+            }
+            if (myChart) {
+                myChart.data = {
+                    labels: labels,
+                    datasets: datasets
+                };
+                myChart.update();
+            } else {
+                myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+        } else {
+            if (myChart) {
+                myChart.data = {
+                    labels: [],
+                    datasets: [{
+                        label: "キーワードの該当ログがありません",
+                        data: [1, 1],
+                        borderColor: 'rgba(0, 0, 0, 1)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        borderWidth: 2
+                    }]
+                };
+                myChart.update();
+            } else {
+                myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: "キーワードの該当ログがありません",
+                            data: [1, 1],
+                            borderColor: 'rgba(0, 0, 0, 1)',
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+
+            }
+            var noLogTr = $("<tr></tr>");
+            var noLogTd = $("<td colspan=\"3\">キーワードの該当ログがありません</td>");
+            noLogTr.append(noLogTd);
+            $(".search-tbody").append(noLogTr);
+        }
+
+        $(".process-NHK").toggle();
+    }
+
 
     $(".links span").click(function () {
         $(".links span").removeClass("active");
@@ -163,11 +339,11 @@ $(function () {
         }
     });
 
-    $(".keyword-filter").keyup(function(){
+    $(".keyword-filter").keyup(function () {
         var keyword = $(this).val();
         if (keyword == "") {
             $(".one-log").removeClass("not-the-one");
-        }else{
+        } else {
             var logSpan = $(".one-log .log-keyword");
             for (let index = 0; index < logSpan.length; index++) {
                 var spanText = $(logSpan[index]).text();
@@ -179,6 +355,11 @@ $(function () {
                 }
             }
         }
+    });
+
+    $(".nhk-search-log").click(function () {
+        $(".process-NHK").toggle();
+        setTimeout(getNhkSearchLog, 100);
     });
 
 });

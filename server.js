@@ -157,7 +157,7 @@ app.get('/writeJSON', (req, res, next) => {
   var service = req.query.service;
   var baseDate = req.query.baseDate;
   const fs = require('fs');
-  if(part == 0){
+  if (part == 0) {
     fs.writeFileSync("NHK-show-list/" + service + "-" + baseDate + ".json", partStr);
     res.status(201).send("Done");
   } else {
@@ -184,7 +184,7 @@ app.get('/writeLog', (req, res, next) => {
   var found = -1;
   for (let index = 0; index < fullLogJson.length; index++) {
     var keywordDetail = fullLogJson[index];
-    if(keywordDetail.keyword == keyword) {
+    if (keywordDetail.keyword == keyword) {
       found = index;
     }
   }
@@ -192,9 +192,9 @@ app.get('/writeLog', (req, res, next) => {
     fullLogJson[found].count = parseInt(fullLogJson[found].count) + 1;
   } else {
     var newKeyword = {
-      id : fullLogJson.length,
-      keyword : keyword,
-      count : 1
+      id: fullLogJson.length,
+      keyword: keyword,
+      count: 1
     };
     fullLogJson.push(newKeyword);
   }
@@ -207,6 +207,116 @@ app.get('/readLog', (req, res, next) => {
   const fs = require('fs');
   var logStr = fs.readFileSync("log/keyword-log.json");
   res.status(200).send(logStr);
+});
+
+app.get('/getNhkUpdateLog', (req, res, next) => {
+  const fs = require('fs');
+  var logStr = fs.readFileSync("log/NHK-update-log.json");
+  res.status(200).send(logStr);
+});
+
+app.get('/setNhkUpdateLog', (req, res, next) => {
+  var date = req.query.date;
+  var start = req.query.start;
+  var end = req.query.end;
+  var logJson = {
+    date: date,
+    start: start,
+    end: end
+  };
+  const fs = require('fs');
+  var oldLogStr = fs.readFileSync("log/NHK-update-log.json");
+  var oldLogJson = JSON.parse(oldLogStr);
+  oldLogJson.push(logJson);
+  var newLogStr = JSON.stringify(oldLogJson);
+  fs.writeFileSync("log/NHK-update-log.json", newLogStr);
+  res.status(200).send();
+});
+
+app.get('/setNhkSearchLog', (req, res, next) => {
+  var keyword = req.query.keyword;
+  var service = req.query.service;
+  var baseDate = req.query.baseDate;
+  var count = req.query.showCount;
+  const fs = require('fs');
+  var logStr = fs.readFileSync("log/NHK-search-log.json");
+  var logJson = JSON.parse(logStr);
+  var foundKeyword = false;
+  for (let index = 0; index < logJson.length; index++) {
+    var log = logJson[index];
+    if (log.keyword == keyword) {
+      foundKeyword = true;
+      var detailList = log.details;
+      var foundDetail = false;
+      for (let i = 0; i < detailList.length; i++) {
+        var detail = detailList[i];
+        var sameDetail = (detail.service == service && detail.baseDate == baseDate);
+        if (sameDetail) {
+          foundDetail = true;
+          break;
+        }
+      }
+      if (!foundDetail) {
+        var newDetail = {
+          service: service,
+          baseDate: baseDate,
+          count: count
+        };
+        logJson[index].details.push(newDetail);
+      }
+    }
+  }
+
+  if (!foundKeyword) {
+    var newLog = {
+      keyword: keyword,
+      details: [{
+        service: service,
+        baseDate: baseDate,
+        count: count
+      }]
+    };
+    logJson.push(newLog);
+  }
+
+  logStr = JSON.stringify(logJson);
+  fs.writeFileSync("log/NHK-search-log.json", logStr);
+  res.status(200).send();
+});
+
+app.get('/getNhkSearchLog', (req, res, next) => {
+  var keyword = req.query.keyword;
+  var serviceId = req.query.serviceId;
+  const fs = require('fs');
+  var logStr = fs.readFileSync("log/NHK-search-log.json");
+  var logJson = JSON.parse(logStr);
+  var foundKeyword = false;
+  for (let index = 0; index < logJson.length; index++) {
+    var log = logJson[index];
+    if (log.keyword == keyword) {
+      var resJson = new Array();
+      var showList = log.details;
+      for (let i = 0; i < showList.length; i++) {
+        var show = showList[i];
+        if (show.service == serviceId) {
+          resJson.push(show);
+        }
+      }
+      if (resJson.length > 0) {
+        var resStr = JSON.stringify(resJson);
+        res.status(200).send(resStr);
+        return;
+      } else {
+        var message = "not found";
+        res.status(200).send(message);
+        return;
+      }
+    }
+  }
+  if (!foundKeyword) {
+    var message = "not found";
+    res.status(200).send(message);
+  }
 });
 
 app.listen(PORT, () => {

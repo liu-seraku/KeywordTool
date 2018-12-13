@@ -87,7 +87,8 @@ h1 {
 
 .content h2,
 .setting-area h2,
-.log-area h2 {
+.log-area h2,
+.nhk-search-area h2 {
   border-bottom: solid 2px #007bff;
   border-left: solid 8px #007bff;
   font-size: 20px;
@@ -209,7 +210,8 @@ h1 {
   position: relative;
 }
 
-.processing {
+.processing,
+.process-NHK {
   width: 100%;
   text-align: center;
   font-weight: bolder;
@@ -223,8 +225,9 @@ h1 {
   display: none;
 }
 
-.log-area {
-  margin-top: 40px;
+.log-area,
+.nhk-search-area {
+  margin-top: 80px;
 }
 
 .keyword-filter {
@@ -257,4 +260,58 @@ h1 {
 
 .not-the-one {
   display: none;
+}
+
+.updating-log {
+  margin-top: 32px;
+}
+
+table {
+  width: 95%;
+  margin: 0px 1rem;
+  text-align: center;
+  border: solid 1px #007bff;
+  color: #007bff;
+}
+
+th {
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+}
+
+th,
+td {
+  border: solid 1px #007bff;
+}
+
+.search-input {
+  display: inline;
+  width: 60%;
+  text-align: center;
+}
+
+.NHK-service {
+  padding: 6px 12px;
+  border: solid 1px #007bff;
+  color: #007bff;
+  margin-right: 16px;
+  border-radius: .25rem;
+}
+
+.nhk-search-log {
+  vertical-align: baseline;
+}
+
+.search-table {
+  max-height: 202px;
+  overflow: auto;
+}
+
+.search-lable {
+  margin-top: 32px;
+}
+
+.search-graph {
+  position: relative;
 }
